@@ -1,42 +1,44 @@
 package com.generation.projetobloco.model;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+	
+	@Entity
+	@Table (name = "tb_produtos")
+	public class Produto {
 
-@Entity
-@Table(name = "tb_categorias")
-public class Categoria {
-		
 		@Id
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		@GeneratedValue (strategy = GenerationType.IDENTITY)
 		private Long id;
-
-		@NotNull
-		@Size(min = 3, max = 100)
-		private String categoria;
 		
 		@NotBlank
 		@Size(min = 3 , max = 100)
+		private String nome;
+		
+		@NotBlank
+		@Size(min = 10 , max = 1000)
 		private String descricao;
 		
-		@OneToMany (fetch = FetchType.LAZY, mappedBy = "categoria", cascade = CascadeType.REMOVE)
-		@JsonIgnoreProperties("categoria")
-		private List<Produto> produtos;
+		@NotNull
+		@Positive
+		private BigDecimal preco;
 		
+		@ManyToOne
+		@JsonIgnoreProperties("produtos")
+		private Categoria categoria;
 
 		public Long getId() {
 			return id;
@@ -46,12 +48,12 @@ public class Categoria {
 			this.id = id;
 		}
 
-		public String getCategoria() {
-			return categoria;
+		public String getNome() {
+			return nome;
 		}
 
-		public void setCategoria(String categoria) {
-			this.categoria = categoria;
+		public void setNome(String nome) {
+			this.nome = nome;
 		}
 
 		public String getDescricao() {
@@ -62,15 +64,21 @@ public class Categoria {
 			this.descricao = descricao;
 		}
 
-		public List<Produto> getProdutos() {
-			return produtos;
+		public BigDecimal getPreco() {
+			return preco;
 		}
 
-		public void setProdutos(List<Produto> produtos) {
-			this.produtos = produtos;
+		public void setPreco(BigDecimal preco) {
+			this.preco = preco;
+		}
+
+		public Categoria getCategoria() {
+			return categoria;
+		}
+
+		public void setCategoria(Categoria categoria) {
+			this.categoria = categoria;
 		}
 		
 		
-		
-
 }
